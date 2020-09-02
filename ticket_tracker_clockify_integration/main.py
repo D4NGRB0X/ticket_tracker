@@ -8,7 +8,7 @@ workspaceId = user.workspaces[0]["id"]
 projects_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/projects"
 
 projects = {
-    client["clientName"]: client['id'] for client in requests.get(
+    client["clientName"].upper(): client['id'] for client in requests.get(
         projects_endpoint, headers=endpoint_config.header
     ).json()
 }
@@ -16,18 +16,22 @@ projects = {
 while True:
     ##### ON CLIENT SELECTION CLICK #####
     print(list(projects))  # turn this into buttons for UI
-    client = input("Please select a client: ")  # this will be accomplished by buttons in UI
+    client = input("Please select a client: ").upper()  # this will be accomplished by buttons in UI
 
-    if client.upper() == "QUIT":
+    if client.upper() == "Q":
         break
 
+    if client.upper() == "RESET":
+        continue
     start_timer = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
 
     ##### ONCE SELECTION MADE NEW PAGE #####
     description = input("Ticket Number: ")
 
-    if description.upper() == "QUIT":
+    if description.upper() == "Q":
         break
+    if description.upper() == "RESET":
+        continue
 
     ###### ON SUBMIT #####
     stop_timer = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
@@ -39,3 +43,5 @@ while True:
     }
     time_entry_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/time-entries"
     add_time_entry = requests.post(time_entry_endpoint, headers=endpoint_config.header, json=payload)
+    print(add_time_entry)
+
