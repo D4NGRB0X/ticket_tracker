@@ -1,9 +1,10 @@
 import requests
 import endpoint_config
-from User import User
+import ticket_logger
+from user import user
 from datetime import datetime, timezone
 
-user = User()
+user = user()
 workspaceId = user.workspaces[0]["id"]
 projects_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/projects"
 
