@@ -21,22 +21,19 @@ def main():
     while True:
         ##### ON CLIENT SELECTION CLICK #####
         print(list(projects))  # turn this into buttons for UI
-        client = input("Please select a client: ").upper()  # this will be accomplished by buttons in UI
+        client = input("Please select a client or Q to cancel: ").upper()  # this will be accomplished by buttons in UI
 
         if client.upper() == "Q":
             break
 
-        if client.upper() == "RESET":
-            continue
         start_timer = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
 
         ##### ONCE SELECTION MADE NEW PAGE #####
-        description = input("Ticket Number: ")
-
-        if description.upper() == "Q":
-            break
-        if description.upper() == "RESET":
+        notes = input("Notes: ")
+        if notes.upper() == "RESET":
             continue
+
+        description = input("Ticket Number: ")
 
         ###### ON SUBMIT #####
         stop_timer = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
@@ -48,7 +45,7 @@ def main():
         }
         time_entry_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/time-entries"
         requests.post(time_entry_endpoint, headers=endpoint_config.header, json=payload)
-        daily_log_add_entry(client, payload)
+        daily_log_add_entry(client, payload, notes)
 
 
 if __name__ == "__main__":
