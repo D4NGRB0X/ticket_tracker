@@ -1,21 +1,31 @@
-"""
-TODO:
-    1. Check if Log Dir exists if Log dir does not exist Make it
-    2. If Log Dir exists check if Daily_Log_File.CSV exists Create file if one does not exist.
-    3. Open Daily_Log_File.CSV append main.payload(change to separate response) and work notes to CSV
-        - CSV will need header containing payload keys + notes
-        - append newline with values
-"""
+from datetime import datetime
 import os
+from csv import writer
+from pathlib import Path
+
+file_name = datetime.now().strftime("%Y-%m-%d")
 
 
 def does_log_dir_exist():
-    pass
+    if not Path("./Logs").exists():
+        os.mkdir("./Logs")
 
 
 def does_daily_log_file_exist():
-    pass
+    os.chdir("./Logs")
+    if not Path(f'{file_name}.csv').exists():
+        with open(f'{file_name}.csv', "a+", newline='') as log:
+            log_writer = writer(log)
+            log_writer.writerow(["Client", "Ticket", "Start", "End", "Notes"])
 
 
-def daily_log_add_entry(payload, notes):
-    pass
+def daily_log_add_entry(client, payload, notes=None):
+    with open(f'{file_name}.csv', "a+", newline='') as log:
+        log_writer = writer(log)
+        log_writer.writerow(
+            [client,
+             payload["description"],
+             datetime.fromisoformat(payload["start"].replace("Z", "+00:00")).astimezone().strftime('%H:%M:%S'),
+             datetime.fromisoformat(payload["end"].replace("Z", "+00:00")).astimezone().strftime('%H:%M:%S'),
+             notes]
+        )
