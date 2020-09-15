@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from ticket_logger import does_log_dir_exist, does_daily_log_file_exist, daily_log_add_entry
+from ticket_logger import *
 import endpoint_config
 import requests
 from user import User
@@ -20,7 +20,7 @@ def main():
 
     while True:
         ##### ON CLIENT SELECTION CLICK #####
-        print(list(projects))  # turn this into buttons for UI
+        print(sorted(list(projects.items())))  # turn this into buttons for UI
         client = input("Please select a client or Q to cancel: ").upper()  # this will be accomplished by buttons in UI
 
         if client.upper() == "Q":
