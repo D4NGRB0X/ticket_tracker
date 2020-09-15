@@ -108,12 +108,12 @@ scratch_pad = Text(user_input_frame, state='disabled', width=60, height=15,)
 scratch_pad.grid(row=1, column=0, columnspan=3, padx=20)
 
 
-ticket_label = ttk.Label(user_input_frame, text="Ticket Number:")
-ticket_label.grid(row=2, column=0, sticky=W, pady=10)
+ticket_label = ttk.Label(user_input_frame, text="Ticket No. :")
+ticket_label.grid(row=2, column=0, sticky=W, padx=10, pady=10)
 
 ticket = StringVar()
 ticket_number = ttk.Entry(user_input_frame, state='disabled', textvariable=ticket)
-ticket_number.grid(row=2, column=1, sticky=W, pady=10)
+ticket_number.grid(row=2, column=0, sticky=E, pady=10)
 ticket.trace_add('write', toggle_submit)
 
 submit = ttk.Button(user_input_frame, text='Submit', state='disabled', command=submit)
