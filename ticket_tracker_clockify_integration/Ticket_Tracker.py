@@ -75,7 +75,7 @@ def reset():
 
 
 root = Tk()
-root.title("Ticket Tracker")
+root.title(f"{user.name} Ticket Tracker")
 root.geometry("800x450")
 
 
@@ -91,7 +91,7 @@ buttons = [ttk.Button(
                 command=lambda client=client: start_timer(client, projects[client])
                 ) for client in sorted(projects)]
 
-for index, button in enumerate(buttons[1:]):
+for index, button in enumerate(buttons):
     button.grid(row=index, column=0, sticky=EW, pady=1)
 
 
