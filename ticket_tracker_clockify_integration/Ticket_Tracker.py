@@ -10,7 +10,7 @@ user = User()
 workspaceId = user.workspaces[0]["id"]
 projects_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/projects"
 projects = {
-    client["clientName"].upper(): client['id'] for client in requests.get(
+    client["name"].upper(): client['id'] for client in requests.get(
         projects_endpoint, headers=endpoint_config.header
     ).json()
     }
