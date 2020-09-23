@@ -12,14 +12,6 @@ from projects import Projects
 user = User()
 workspaceId = user.workspaces[0]["id"]
 client = Client(workspaceId)
-# projects = [(project['clientName'], {project['name']: project['id']}) for project in requests.get(projects_endpoint, headers=endpoint_config.header).json()]
-# project_by_client = defaultdict(list)
-#
-# for client, project in projects:
-#     project_by_client[client].append(project)
-
-
-
 
 
 def main():

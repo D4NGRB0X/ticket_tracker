@@ -4,10 +4,16 @@ from tkinter import ttk
 from datetime import datetime, timezone
 import requests
 from user import User
+from GUI import Window, WindowFrame, ButtonFrame
+#from utils import *
+from client import Client
+from projects import Projects
 
+# from ticket_tracker_clockify_integration.utils import *
 
 user = User()
 workspaceId = user.workspaces[0]["id"]
+
 projects_endpoint = endpoint_config.default_endpoint + f"workspaces/{workspaceId}/projects"
 projects = {
     client["name"].upper(): client['id'] for client in requests.get(
@@ -74,16 +80,13 @@ def reset():
     toggle_client_selection_on()
 
 
-root = Tk()
-root.title(f"{user.name} Ticket Tracker")
-root.geometry("800x450")
+main_window = Window('Title', '800x450')
 
-
-main_frame = ttk.Frame(root)
+main_frame = WindowFrame(main_window, borderwidth=5)
 main_frame.grid(row=0, rowspan=3, column=0, columnspan=3)
 
-button_frame = Frame(main_frame, borderwidth=5, relief="sunken")
-button_frame.grid(row=0, rowspan=3, column=0, sticky=NS)
+button_frame = ButtonFrame(main_frame, borderwidth=5, relief="sunken")
+button_frame.grid(row=0, rowspan=3, column=0, sticky=NSEW)
 
 buttons = [ttk.Button(
                 button_frame,
