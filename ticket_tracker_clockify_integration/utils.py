@@ -25,12 +25,12 @@ def toggle_submit(*_):
         submit['state'] = 'disabled'
 
 
-def start_timer(client, project):
+def start_timer(client,):
     client_label['text'] = f'Client: {client}'
     toggle_client_selection_off()
     scratch_pad.focus_set()
     payload['start'] = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
-    payload['projectId'] = project
+    # payload['projectId'] = project
 
 
 def stop_timer():

@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from ticket_tracker_clockify_integration import utils
 
 
 class Window(Tk):
@@ -8,19 +9,7 @@ class Window(Tk):
         super(Window, self).__init__()
         self.title(title)
         self.geometry(geometry)
-        container = Frame(self)
-        container.grid()
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-    #     self.frames = {}
-    #     frame = WindowFrame(container, self)
-    #     self.frames[WindowFrame] = frame
-    #     frame.grid(row=0, column=0, sticky=NSEW)
-    #
-    # def show_frame(self, controller):
-    #     frame = self.frame[controller]
-    #     frame.tkraise()
+        self._frame = None
 
 
 class WindowFrame(Frame):
@@ -33,16 +22,6 @@ class ButtonFrame(Frame):
         super().__init__(parent, *args, **kwargs)
 
 
-class UserInputFrame(Frame):
+class ProjectButtons(ButtonFrame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-
-
-class ClientButtons(ButtonFrame):
-    def __init__(self):
-        super().__init__()
-
-
-class ProjectButtons(ButtonFrame):
-    def __init__(self):
-        super().__init__()

@@ -37,7 +37,7 @@ def main():
                 print(item['name'])
 
             task = input("Please select a task: ")
-            project_name_and_id = {project['name']: project['id'] for project in projects.project_client }
+            project_name_and_id = {project['name']: project['id'] for project in projects.project_client}
             project_id = project_name_and_id[task]
 
         ##### ONCE SELECTION MADE NEW PAGE #####

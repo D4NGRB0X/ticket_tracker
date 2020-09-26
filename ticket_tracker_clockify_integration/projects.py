@@ -3,7 +3,7 @@ import requests
 
 
 class Projects:
-    def __init__(self, workspace_id, client_id):
+    def __init__(self, workspace_id, client_id=None):
         self.projects = requests.get(
             endpoint_config.default_endpoint + f"workspaces/{workspace_id}/projects",
             headers=endpoint_config.header).json()
