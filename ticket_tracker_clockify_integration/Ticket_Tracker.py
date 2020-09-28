@@ -66,15 +66,19 @@ def select_client(client_selection):
     payload['start'] = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
     print(payload)
     project_name_and_id.update({p['name']: p['id'] for p in project.project_client})
-    project_frame = ProjectButtons(main_frame, borderwidth=5, relief="sunken")
-    project_frame.grid(row=0, rowspan=3, column=0, sticky=tk.NSEW)
-    project_buttons = [ttk.Button(
-        project_frame,
-        text=project_item,
-        command=lambda project_item=project_item: select_project(project_name_and_id[project_item], project_frame)
-    ) for project_item in project_name_and_id.keys()]
+    if len(project_name_and_id) > 1:
+        project_frame = ProjectButtons(main_frame, borderwidth=5, relief="sunken")
+        project_frame.grid(row=0, rowspan=3, column=0, sticky=tk.NSEW)
+        project_buttons = [ttk.Button(
+            project_frame,
+            text=project_item,
+            command=lambda project_item=project_item: select_project(project_name_and_id[project_item], project_frame)
+        ) for project_item in project_name_and_id.keys()]
 
-    set_button_location(project_buttons)
+        set_button_location(project_buttons)
+    else:
+        payload['projectId'] = [value for value in project_name_and_id.values()][0]
+        print(payload)
 
 
 def submit():
