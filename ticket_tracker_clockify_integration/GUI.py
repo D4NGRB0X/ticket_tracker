@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from ticket_tracker_clockify_integration import utils
+from ticket_tracker_clockify_integration import tracker_utils
 
 
 class Window(Tk):
@@ -25,3 +25,5 @@ class ButtonFrame(Frame):
 class ProjectButtons(ButtonFrame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+
+

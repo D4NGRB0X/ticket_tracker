@@ -21,7 +21,6 @@ def clear_data():
     scratch_pad.delete('1.0', tk.END)
     client_label['text'] = "Client: "
     project_name_and_id.clear()
-    button_frame.lift()
     toggle_submit()
 
 
@@ -67,8 +66,8 @@ def select_client(client_selection):
     print(payload)
     project_name_and_id.update({p['name']: p['id'] for p in project.project_client})
     if len(project_name_and_id) > 1:
-        project_frame = ProjectButtons(main_frame, borderwidth=5, relief="sunken")
-        project_frame.grid(row=0, rowspan=3, column=0, sticky=tk.NSEW)
+        project_frame = ProjectButtons(button_frame, borderwidth=5)
+        project_frame.grid(row=0, column=1, sticky=tk.NSEW)
         project_buttons = [ttk.Button(
             project_frame,
             text=project_item,
@@ -92,28 +91,31 @@ def submit():
     print(payload)
 
 
-main_window = Window('Title', '900x600')
+main_window = Window(f'{user.name} Ticket Tracker', '750x425')
 
 main_frame = WindowFrame(main_window, borderwidth=5)
 main_frame.grid(row=0, rowspan=3, column=0, columnspan=3)
 
 button_frame = ButtonFrame(main_frame, borderwidth=5, relief="sunken")
-button_frame.grid(row=0, rowspan=3, column=0, sticky=tk.NSEW)
+button_frame.grid(row=0, column=0, padx=10, pady=10, sticky=tk.NSEW)
 
-client_buttons = [ttk.Button(
-                button_frame,
-                text=client,
-                command=lambda client=client: select_client(client)
-                ) for client in clients.clients]
+client_frame = ProjectButtons(button_frame, borderwidth=5)
+client_frame.grid(row=0, column=0, sticky=tk.NSEW)
+
+client_buttons = [ttk.Button(client_frame,
+                             text=client,
+                             command=lambda client=client: select_client(client)
+                             ) for client in clients.clients]
 
 set_button_location(client_buttons)
 
-
 user_input_frame = ttk.Frame(main_frame, borderwidth=5, relief="sunken")
-user_input_frame.grid(row=0, column=1, pady=20)
+user_input_frame.grid(row=0, column=1, padx=10, pady=20)
 
 client_label = ttk.Label(user_input_frame, text="Client:")
 client_label.grid(row=0, column=0, sticky=tk.NW, padx=20, pady=10)
+
+
 
 reset = ttk.Button(user_input_frame,
                    text="Reset",
