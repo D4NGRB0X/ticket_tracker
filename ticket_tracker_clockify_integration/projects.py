@@ -12,3 +12,7 @@ class Projects:
             endpoint_config.default_endpoint + f"workspaces/{workspace_id}/projects",
             params={'clients': client_id},
             headers=endpoint_config.header).json()
+
+        self.tag = requests.get(
+            endpoint_config.default_endpoint + f"workspaces/{workspace_id}/tags",
+            headers=endpoint_config.header).json()

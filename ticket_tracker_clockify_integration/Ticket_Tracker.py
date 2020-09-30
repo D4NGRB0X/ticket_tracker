@@ -7,14 +7,18 @@ from ticket_tracker_clockify_integration.user import User
 from ticket_tracker_clockify_integration.GUI import Window, WindowFrame, ButtonFrame, ProjectButtons
 from ticket_tracker_clockify_integration.client import Client
 from ticket_tracker_clockify_integration.projects import Projects
+from ticket_tracker_clockify_integration.tags import Tags
 
 
 user = User()
 workspaceId = user.workspaces[0]["id"]
 clients = Client(workspaceId)
+tags = Tags(workspaceId)
 project_name_and_id = {}
 payload = {}
 
+print(tags.tags)
+print(tags.tag_name)
 
 def clear_data():
     ticket.set("")
@@ -109,33 +113,45 @@ client_buttons = [ttk.Button(client_frame,
 
 set_button_location(client_buttons)
 
+
 user_input_frame = ttk.Frame(main_frame, borderwidth=5, relief="sunken")
 user_input_frame.grid(row=0, column=1, padx=10, pady=20)
 
+tag_select_frame = ttk.Frame(user_input_frame)
+tag_select_frame.grid(row=0, column=0, sticky='w', padx=15)
+
+tag_var = tk.StringVar()
+tag_select = [ttk.Radiobutton(tag_select_frame,
+                              text=tag, 
+                              variable=tag_var, 
+                              value=tags.tag_name[tag]
+                              ) for tag in tags.tag_name.keys()]
+for index, tag in enumerate(tag_select):
+    tag.grid(row=0, column=index, ipadx=1)
+
+
 client_label = ttk.Label(user_input_frame, text="Client:")
-client_label.grid(row=0, column=0, sticky=tk.NW, padx=20, pady=10)
-
-
+client_label.grid(row=1, column=0, sticky=tk.NW, padx=20, pady=10)
 
 reset = ttk.Button(user_input_frame,
                    text="Reset",
                    command=lambda: [clear_data(), toggle_client_selection_on()])
-reset.grid(row=0, column=2, sticky=tk.NE, padx=20, pady=10)
+reset.grid(row=1, column=0, sticky=tk.NE, padx=20, pady=10)
 
 scratch_pad = tk.Text(user_input_frame, state='disabled', width=60, height=15,)
-scratch_pad.grid(row=1, column=0, columnspan=3, padx=20)
+scratch_pad.grid(row=2, column=0, columnspan=2, padx=20)
 
 
 ticket_label = ttk.Label(user_input_frame, text="Ticket No. :")
-ticket_label.grid(row=2, column=0, sticky=tk.W, padx=10, pady=10)
+ticket_label.grid(row=3, column=0, sticky=tk.W, padx=10, pady=10)
 
 ticket = tk.StringVar()
 ticket_number = ttk.Entry(user_input_frame, state='disabled', textvariable=ticket)
-ticket_number.grid(row=2, column=0, sticky=tk.E, pady=10)
+ticket_number.grid(row=3, column=0, pady=10)
 ticket.trace_add('write', toggle_submit)
 
 submit = ttk.Button(user_input_frame, text='Submit', state='disabled', command=submit)
-submit.grid(row=2, column=2, sticky=tk.SE, padx=20, pady=10)
+submit.grid(row=3, column=0, sticky=tk.SE, padx=20, pady=10)
 
 
 tk.mainloop()
