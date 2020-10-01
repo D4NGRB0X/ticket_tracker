@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from ticket_tracker_clockify_integration import tracker_utils
 
 
 class Window(Tk):
@@ -10,6 +9,8 @@ class Window(Tk):
         self.title(title)
         self.geometry(geometry)
         self._frame = None
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
 
 class WindowFrame(Frame):

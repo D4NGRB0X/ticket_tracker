@@ -3,11 +3,11 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime, timezone
 import requests
-from ticket_tracker_clockify_integration.user import User
-from ticket_tracker_clockify_integration.GUI import Window, WindowFrame, ButtonFrame, ProjectButtons
-from ticket_tracker_clockify_integration.client import Client
-from ticket_tracker_clockify_integration.projects import Projects
-from ticket_tracker_clockify_integration.tags import Tags
+from user import User
+from GUI import Window, WindowFrame, ButtonFrame, ProjectButtons
+from client import Client
+from projects import Projects
+from tags import Tags
 
 
 user = User()
@@ -20,13 +20,21 @@ payload = {}
 print(tags.tags)
 print(tags.tag_name)
 
+
+def tag_select():
+    tag_list = [tag_var.get()]
+    payload['tagIds'] = tag_list
+    print(payload)
+
+
 def clear_data():
     ticket.set("")
     scratch_pad.delete('1.0', tk.END)
     client_label['text'] = "Client: "
     project_name_and_id.clear()
     toggle_submit()
-
+    tag_var.set(None)
+    payload.clear()
 
 def set_button_location(buttons):
     for index, button in enumerate(buttons):
@@ -56,7 +64,6 @@ def toggle_submit(*_):
 
 def select_project(project_id, project_frame):
     payload['projectId'] = project_id
-    print(payload)
     project_frame.destroy()
     project_name_and_id.clear()
 
@@ -81,7 +88,6 @@ def select_client(client_selection):
         set_button_location(project_buttons)
     else:
         payload['projectId'] = [value for value in project_name_and_id.values()][0]
-        print(payload)
 
 
 def submit():
@@ -124,8 +130,8 @@ tag_var = tk.StringVar()
 tag_select = [ttk.Radiobutton(tag_select_frame,
                               text=tag, 
                               variable=tag_var, 
-                              value=tags.tag_name[tag]
-                              ) for tag in tags.tag_name.keys()]
+                              value=tags.tag_name[tag],
+                              command=tag_select) for tag in tags.tag_name.keys()]
 for index, tag in enumerate(tag_select):
     tag.grid(row=0, column=index, ipadx=1)
 
@@ -139,20 +145,21 @@ reset = ttk.Button(user_input_frame,
 reset.grid(row=1, column=0, sticky=tk.NE, padx=20, pady=10)
 
 scratch_pad = tk.Text(user_input_frame, state='disabled', width=60, height=15,)
-scratch_pad.grid(row=2, column=0, columnspan=2, padx=20)
+scratch_pad.grid(row=2, column=0, sticky='w', padx=10)
 
-
-ticket_label = ttk.Label(user_input_frame, text="Ticket No. :")
-ticket_label.grid(row=3, column=0, sticky=tk.W, padx=10, pady=10)
+ticket_label_frame = ttk.Frame(user_input_frame)
+ticket_label_frame.grid(row=3, column=0, sticky=tk.W, padx=10, pady=10)
+ticket_label = ttk.Label(ticket_label_frame, text="Ticket No. :")
+ticket_label.pack(anchor='w')
 
 ticket = tk.StringVar()
-ticket_number = ttk.Entry(user_input_frame, state='disabled', textvariable=ticket)
-ticket_number.grid(row=3, column=0, pady=10)
+ticket_number = ttk.Entry(ticket_label_frame, state='disabled', textvariable=ticket)
+ticket_number.pack(anchor='e')
 ticket.trace_add('write', toggle_submit)
 
 submit = ttk.Button(user_input_frame, text='Submit', state='disabled', command=submit)
 submit.grid(row=3, column=0, sticky=tk.SE, padx=20, pady=10)
 
-
-tk.mainloop()
 print(payload)
+tk.mainloop()
+
