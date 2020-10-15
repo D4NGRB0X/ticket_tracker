@@ -1,8 +1,4 @@
-try:
-    import endpoint_config
-except:
-    pass
-
+import endpoint_config
 import requests
 
 
