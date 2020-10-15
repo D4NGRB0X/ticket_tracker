@@ -4,7 +4,7 @@ from tkinter import ttk
 from datetime import datetime, timezone
 import requests
 from user import User
-from GUI import Window, WindowFrame, ButtonFrame, ProjectButtons
+from gui import Window, WindowFrame, ButtonFrame, ProjectButtons
 from client import Client
 from projects import Projects
 from tags import Tags
@@ -17,14 +17,10 @@ tags = Tags(workspaceId)
 project_name_and_id = {}
 payload = {}
 
-print(tags.tags)
-print(tags.tag_name)
-
 
 def tag_select():
     tag_list = [tag_var.get()]
     payload['tagIds'] = tag_list
-    print(payload)
 
 
 def clear_data():
@@ -35,6 +31,7 @@ def clear_data():
     toggle_submit()
     tag_var.set(None)
     payload.clear()
+
 
 def set_button_location(buttons):
     for index, button in enumerate(buttons):
@@ -74,7 +71,6 @@ def select_client(client_selection):
     toggle_client_selection_off()
     scratch_pad.focus_set()
     payload['start'] = datetime.now(tz=timezone.utc).isoformat().replace("+00:00", "Z")
-    print(payload)
     project_name_and_id.update({p['name']: p['id'] for p in project.project_client})
     if len(project_name_and_id) > 1:
         project_frame = ProjectButtons(button_frame, borderwidth=5)
@@ -98,7 +94,6 @@ def submit():
     clear_data()
     toggle_client_selection_on()
     button_frame.lift()
-    print(payload)
 
 
 main_window = Window(f'{user.name} Ticket Tracker', '750x425')
@@ -126,14 +121,17 @@ user_input_frame.grid(row=0, column=1, padx=10, pady=20)
 tag_select_frame = ttk.Frame(user_input_frame)
 tag_select_frame.grid(row=0, column=0, sticky='w', padx=15)
 
+tag_label = client_label = ttk.Label(tag_select_frame, text="Optional Tag:")
+client_label.grid(row=0, column=0, sticky=tk.W)
+
 tag_var = tk.StringVar()
 tag_select = [ttk.Radiobutton(tag_select_frame,
-                              text=tag, 
-                              variable=tag_var, 
+                              text=tag,
+                              variable=tag_var,
                               value=tags.tag_name[tag],
                               command=tag_select) for tag in tags.tag_name.keys()]
 for index, tag in enumerate(tag_select):
-    tag.grid(row=0, column=index, ipadx=1)
+    tag.grid(row=0, column=index + 1, ipadx=1)
 
 
 client_label = ttk.Label(user_input_frame, text="Client:")
@@ -160,6 +158,5 @@ ticket.trace_add('write', toggle_submit)
 submit = ttk.Button(user_input_frame, text='Submit', state='disabled', command=submit)
 submit.grid(row=3, column=0, sticky=tk.SE, padx=20, pady=10)
 
-print(payload)
 tk.mainloop()
 

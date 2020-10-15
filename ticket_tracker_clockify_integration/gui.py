@@ -8,9 +8,6 @@ class Window(Tk):
         super(Window, self).__init__()
         self.title(title)
         self.geometry(geometry)
-        self._frame = None
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
 
 
 class WindowFrame(Frame):
